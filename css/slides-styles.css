@@ -1,0 +1,36 @@
+.data-container {
+    display: flex;
+}
+
+.logo {
+    width: 21vw;
+    height: 21vw;
+}
+
+.info {
+    margin-left: 5vw;
+}
+
+h1, h2 {
+    text-align: left;
+}
+
+.categories {
+    width: 30vw;
+    height: 30vw;
+}
+
+.definition {
+    text-indent: 2vw;
+    text-align: justify;
+    font-size: 1.5vw;
+}
+
+.description {
+    font-size: 1vw;
+}
+
+code {
+    font-size: .7vw;
+    line-height: 1.5;
+}
