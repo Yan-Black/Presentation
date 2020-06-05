@@ -29,7 +29,7 @@
 					</div>
 				</section>
 				<section data-background-image="src/img/background.jpg">
-					<h1>What is design patterns ?..</h1>
+					<h1>What are design patterns ?..</h1>
 				</section>
 				<section data-background-image="src/img/background.jpg">
 					<p>
@@ -58,57 +58,56 @@
 						<img src="src/img/chain-of-responsibility.jpg" alt="">
 					</section>
 					<section>
-						<pre><code data-trim data-noescape>
-							class Account {
-								setNext(account) {
-									this.successor = account
-								}
-								pay(amountToPay) {
-									if (this.canPay(amountToPay)) {
-										console.log(`Paid ${amountToPay} using ${this.name}`)
-									} else if (this.successor) {
-										console.log(`Cannot pay using ${this.name}. Proceeding...`)
-										this.successor.pay(amountToPay)
-									} else {
-										console.log('None of the accounts have enough balance')
+						<div class="code-example">
+							<pre><code data-trim data-noescape>
+								class Account {
+									setNext(account) {
+										this.successor = account
+									}
+									pay(amountToPay) {
+										if (this.canPay(amountToPay)) {
+											console.log(`Paid ${amountToPay} using ${this.name}`)
+										} else if (this.successor) {
+											console.log(`Cannot pay using ${this.name}. Proceeding...`)
+											this.successor.pay(amountToPay)
+										} else {
+											console.log('None of the accounts have enough balance')
+										}
+									}
+									canPay(amount) {
+										return this.balance >= amount
 									}
 								}
-								canPay(amount) {
-									return this.balance >= amount
+							</code></pre>
+							<pre><code data-trim data-noescape>
+								class Bank extends Account {
+									constructor(balance) {
+										super()
+										this.name = 'bank'
+										this.balance = balance
+									}
+								}	
+								class Paypal extends Account {
+									constructor(balance) {
+										super()        
+										this.name = 'Paypal'
+										this.balance = balance
+									}
 								}
-							}
-						</code></pre>
+								class Bitcoin extends Account {
+									constructor(balance) {
+										super()        
+										this.name = 'bitcoin'
+										this.balance = balance
+									}
+								}
+							</code></pre>
+						</div>
 					</section>
 					<section>
 						<pre><code data-trim data-noescape>
-							class Bank extends Account {
-								constructor(balance) {
-									super()
-									this.name = 'bank'
-									this.balance = balance
-								}
-							}	
-							class Paypal extends Account {
-								constructor(balance) {
-									super()        
-									this.name = 'Paypal'
-									this.balance = balance
-								}
-							}
-							class Bitcoin extends Account {
-								constructor(balance) {
-									super()        
-									this.name = 'bitcoin'
-									this.balance = balance
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							// Implement next chain
-							//      bank->paypal->bitcoin
-							//
+							// chain
+							// bank->paypal->bitcoin
 							// Bank has a priority
 							// If Bank cannot pay, go to Paypal
 							// If Paypal cannot pay, go to Bitcoin
@@ -132,107 +131,6 @@
 				<section data-background-image="src/img/background.jpg">
 					<section>
 						<h5>
-							Command
-						</h5>
-						<p class="definition">
-							Encapsulate a request as an object, 
-							thereby letting you parameterize clients with different requests, 
-							queue or log requests, and support undoable operations.
-						</p>
-						<div class="data-container">
-							<p class="description">Frequency of use (in JavaScript):</p>
-							<img src="src/img/use_high.png" style="margin-left: 2vw;" alt="">
-						</div>
-						<img src="src/img/command.jpg" alt="">
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							// Receiver
-							class Bulb {
-								turnOn() {
-									console.log('Bulb has been lit')
-								}
-								
-								turnOff() {
-									console.log('Darkness!')
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							/*
-							Command interface :
-
-    				execute()
-    				undo()
-    		    	redo()
-							*/
-
-							// Command
-							class TurnOnCommand {
-								constructor(bulb) {
-									this.bulb = bulb
-								}
-								
-								execute() {
-									this.bulb.turnOn()
-								}
-								
-								undo() {
-									this.bulb.turnOff()
-								}
-								
-								redo() {
-									this.execute()
-								}
-							}
-							
-							class TurnOffCommand {
-								constructor(bulb) {
-									this.bulb = bulb
-								}
-								
-								execute() {
-									this.bulb.turnOff()
-								}
-								
-								undo() {
-									this.bulb.turnOn()
-								}
-
-								redo() {
-									this.execute()
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							// Invoker
-							class RemoteControl {
-								submit(command) {
-									command.execute()
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const bulb = new Bulb()
-
-							const turnOn = new TurnOnCommand(bulb)
-							const turnOff = new TurnOffCommand(bulb)
-							
-							const remote = new RemoteControl()
-							remote.submit(turnOn) // Bulb has been lit!
-							remote.submit(turnOff) // Darkness!
-						</code></pre>
-					</section>
-				</section>
-				<section data-background-image="src/img/background.jpg">
-					<section>
-						<h5>
 							Iterator
 						</h5>
 						<p class="definition">
@@ -247,177 +145,43 @@
 					</section>
 					<section>
 						<pre><code data-trim data-noescape>
-							class RadioStation {
-								constructor(frequency) {
-									this.frequency = frequency    
-								}
-								
-								getFrequency() {
-									return this.frequency
-								}
-							}
+							const range = {
+								from: 1,
+								to: 5
+							  };
 						</code></pre>
 					</section>
 					<section>
 						<pre><code data-trim data-noescape>
-							class StationList {
-								constructor(){
-									this.stations = []
-								}
-							
-								addStation(station) {
-									this.stations.push(station)
-								}
-								
-								removeStation(toRemove) {
-									const toRemoveFrequency = toRemove.getFrequency()
-									this.stations = this.stations.filter(station => {
-										return station.getFrequency() !== toRemoveFrequency
-									})
-								}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const stationList = new StationList()
+							// 1. for..of at first calling this function
+							range[Symbol.iterator] = function() {
 
-							stationList.addStation(new RadioStation(89))
-							stationList.addStation(new RadioStation(101))
-							stationList.addStation(new RadioStation(102))
-							stationList.addStation(new RadioStation(103.2))
-							
-							stationList.stations.forEach(station => console.log(station.getFrequency()))
-							
-							stationList.removeStation(new RadioStation(89)) // Will remove station 89
-						</code></pre>
-					</section>
-				</section>
-				<section data-background-image="src/img/background.jpg">
-					<section>
-						<h5>
-							Mediator
-						</h5>
-						<p class="definition">
-							Define an object that encapsulates how a set of objects interact.
-							 Mediator promotes loose coupling by keeping objects from referring to each other explicitly, 
-							 and it lets you vary their interaction independently.
-						</p>
-						<div class="data-container">
-							<p class="description">Frequency of use (in JavaScript):</p>
-							<img src="src/img/use_medium_low.png" style="margin-left: 2vw;" alt="">
-						</div>
-						<img src="src/img/mediator.jpg" alt="">
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							// Mediator
-							class ChatRoom {
-								showMessage(user, message) {
-									const time = new Date()
-									const sender = user.getName()
-							
-									console.log(time + '[' + sender + ']:' + message)
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							class User {
-								constructor(name, chatMediator) {
-									this.name = name
-									this.chatMediator = chatMediator
-								}
-								
-								getName() {
-									return this.name
-								}
-								
-								send(message) {
-									this.chatMediator.showMessage(this, message)
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const mediator = new ChatRoom()
+							// ...then it returns iterator object:
+							// 2. Next, for..of works only with this iterator, calling it for new values
+							return {
+								current: this.from,
+								last: this.to,
 
-							const john = new User('John Doe', mediator)
-							const jane = new User('Jane Doe', mediator)
-							
-							john.send('Hi there!')
-							jane.send('Hey!')
-							
-							// Output will be
-							// Feb 14, 10:58 [John]: Hi there!
-							// Feb 14, 10:58 [Jane]: Hey!
+								// 3. next() calls on every iteration for..of
+								next() {
+								// 4. it must return value {done:.., value :...}
+								if (this.current <= this.last) {
+									return { done: false, value: this.current++ };
+								} else {
+									return { done: true };
+								}
+							    }
+							  };
+							};
 						</code></pre>
-					</section>
-				</section>
-				<section data-background-image="src/img/background.jpg">
-					<section>
-						<h5>
-							Memento
-						</h5>
-						<p class="definition">
-							Without violating encapsulation, capture and externalize an object's 
-							internal state so that the object can be restored to this state later.
-						</p>
-						<div class="data-container">
-							<p class="description">Frequency of use (in JavaScript):</p>
-							<img src="src/img/use_low.png" style="margin-left: 2vw;" alt="">
-						</div>
-						<img src="src/img/memento.jpg" alt="">
 					</section>
 					<section>
 						<pre><code data-trim data-noescape>
-							class EditorMemento {
-								constructor(content) {
-									this._content = content
-								}
-								
-								getContent() {
-									return this._content
-								}
+							now it works!
+							
+							for (let num of range) {
+							    console.log(num); -> 1, then 2, 3, 4, 5
 							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							class Editor {
-								constructor(){
-									this._content = ''
-								}
-								
-								type(words) {
-									this._content = this._content + ' ' + words
-								}
-								
-								getContent() {
-									return this._content
-								}
-								
-								save() {
-									return new EditorMemento(this._content)
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const editor = new Editor()
-
-							// write something
-							editor.type('This is the first sentence.')
-							editor.type('This is second.')
-							
-							// save state
-							const saved = editor.save()
-							
-							// write something else
-							editor.type('And this is third.')
-							
-							// content for saving
-							console.log(editor.getContent())// This is the first sentence. This is second. And this is third.
 						</code></pre>
 					</section>
 				</section>
@@ -438,35 +202,35 @@
 					</section>
 					<section>
 						<pre><code data-trim data-noescape>
-							const JobPost = title => ({
-								title: title
+							const setColor = color => ({
+								color: color
 							})
 							
-							class JobSeeker {
-								constructor(name) {
-									this._name = name
+							class Element {
+								constructor(defaultColor) {
+									this.elementName = elementName;
 								}
 							
-								notify(jobPost) {
-									console.log(this._name, 'has been notified of a new posting :', jobPost.title)
+								changeColor(color) {
+									console.log(`${this.elementName} color has been changed to : setColor.color`);
 								}
 							}
 						</code></pre>
 					</section>
 					<section>
 						<pre><code data-trim data-noescape>
-							class JobBoard {
+							class MainElement {
 								constructor() {
-									this._subscribers = []
+									this.childElements = [];
 								}
 							
-								subscribe(jobSeeker) {
-									this._subscribers.push(jobSeeker)
+								appendChild(Element) {
+									this.childElements.push(Element);
 								}
 							
-								addJob(jobPosting) {
-									this._subscribers.forEach(subscriber => {
-										subscriber.notify(jobPosting)
+								setColorToChildElements(setColor) {
+									this.childElements.forEach(element => {
+										element.changeColor(setColor);
 									})
 								}
 							}
@@ -474,338 +238,27 @@
 					</section>
 					<section>
 						<pre><code data-trim data-noescape>
-							// create subscribers
-							const jonDoe = new JobSeeker('John Doe')
-							const janeDoe = new JobSeeker('Jane Doe')
-							const kaneDoe = new JobSeeker('Kane Doe')
+							// create elements
+							const div = new Element('div');
+							const span = new Element('span');
+							const section = new Element('section');
 							
-							// create a job board
-							// sign job seekers
-							const jobBoard = new JobBoard()
-							jobBoard.subscribe(jonDoe)
-							jobBoard.subscribe(janeDoe)
+							// create a main element
+							// append child elements
+							const mainElement = new MainElement()
+							mainElement.appendChild(div);
+							mainElement.appendChild(span);
+							mainElement.appendChild(section);
 							
-							// notify subscribers about new job vacancy
-							jobBoard.addJob(JobPost('Software Engineer'))
+							// notify child elements about new color
+							mainElement.setColorToChildElements(setColor('green'));
 							
-							// John Doe has been notified of a new posting : Software Engineer
-							// Jane Doe has been notified of a new posting : Software Engineer
+							// div color has been changed to : green
+							// span color has been changed to : green
+							// section color has been changed to : green
 						</code></pre>
 					</section>
 				</section>
-				<section data-background-image="src/img/background.jpg">
-					<section>
-						<h5>
-							State
-						</h5>
-						<p class="definition">
-							Allow an object to alter its behavior when its internal state changes. 
-							The object will appear to change its class.
-						</p>
-						<div class="data-container">
-							<p class="description">Frequency of use (in JavaScript):</p>
-							<img src="src/img/use_medium_low.png" style="margin-left: 2vw;" alt="">
-						</div>
-						<img src="src/img/state.jpg" alt="">
-					</section>
-					<section>
-						<h5>
-							conversion functions
-						</h5>
-						<pre><code data-trim data-noescape>
-							const upperCase = inputString => inputString.toUpperCase()
-							const lowerCase = inputString => inputString.toLowerCase()
-							const defaultTransform = inputString => inputString
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							class TextEditor {
-								constructor(transform) {
-									this._transform = transform
-								}
-								
-								setTransform(transform) {
-									this._transform = transform
-								}
-								
-								type(words) {
-									console.log(this._transform(words))
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const editor = new TextEditor(defaultTransform)
-
-							editor.type('First line')
-							
-							editor.setTransform(upperCase)
-							
-							editor.type('Second line')
-							editor.type('Third line')
-							
-							editor.setTransform(lowerCase)
-							
-							editor.type('Fourth line')
-							editor.type('Fifth line')
-							
-							// First line
-							// SECOND LINE
-							// THIRD LINE
-							// fourth line
-							// fifth line
-						</code></pre>
-					</section>
-
-				</section>
-				<section data-background-image="src/img/background.jpg">
-					<section>
-						<h5>
-							Strategy
-						</h5>
-						<p class="definition">
-							Define a family of algorithms, encapsulate each one, and make them interchangeable. 
-							Strategy lets the algorithm vary independently from clients that use it.
-						</p>
-						<div class="data-container">
-							<p class="description">Frequency of use (in JavaScript):</p>
-							<img src="src/img/use_medium.png" style="margin-left: 2vw;" alt="">
-						</div>
-						<img src="src/img/strategy.jpg" alt="">
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const bubbleSort = dataset => {
-								console.log('Sorting with bubble sort')
-								// ...
-								// ...
-								return dataset
-							}
-							
-							const quickSort = dataset => {
-								console.log('Sorting with quick sort')
-								// ...
-								// ...
-								return dataset
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const sorter = dataset => {
-								if(dataset.length > 5){
-									return quickSort
-								} else {
-									return bubbleSort
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const longDataSet = [1, 5, 4, 3, 2, 8]
-							const shortDataSet = [1, 5, 4]
-							
-							const sorter1 = sorter(longDataSet)
-							const sorter2 = sorter(shortDataSet)
-							
-							sorter1(longDataSet) // Sorting with quick sort
-							sorter2(shortDataSet) // Sorting with bubble sort
-						</code></pre>
-					</section>
-				</section>
-				<section data-background-image="src/img/background.jpg">
-					<section>
-						<h5>
-							Template Method
-						</h5>
-						<p class="definition">
-							Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. 
-							Template Method lets subclasses redefine certain steps of an algorithm without 
-							changing the algorithm's structure.
-						</p>
-						<div class="data-container">
-							<p class="description">Frequency of use (in JavaScript):</p>
-							<img src="src/img/use_medium_low.png" style="margin-left: 2vw;" alt="">
-						</div>
-						<img src="src/img/template-method.jpg" alt="">
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							class Builder {
-								// Template method 
-								build() {
-									this.test()
-									this.lint()
-									this.assemble()
-									this.deploy()
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							class AndroidBuilder extends Builder {
-								test() {
-									console.log('Running android tests')
-								}
-								
-								lint() {
-									console.log('Linting the android code')
-								}
-								
-								assemble() {
-									console.log('Assembling the android build')
-								}
-								
-								deploy() {
-									console.log('Deploying android build to server')
-								}
-							}
-							
-							class IosBuilder extends Builder {
-								test() {
-									console.log('Running ios tests')
-								}
-								
-								lint() {
-									console.log('Linting the ios code')
-								}
-								
-								assemble() {
-									console.log('Assembling the ios build')
-								}
-								
-								deploy() {
-									console.log('Deploying ios build to server')
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const androidBuilder = new AndroidBuilder()
-							androidBuilder.build()
-
-							// Running android tests
-							// Linting the android code
-							// Assembling the android build
-							// Deploying android build to server
-
-							const iosBuilder = new IosBuilder()
-							iosBuilder.build()
-
-							// Running ios tests
-							// Linting the ios code
-							// Assembling the ios build
-							// Deploying ios build to server
-						</code></pre>
-					</section>
-				</section>
-				<section data-background-image="src/img/background.jpg">
-					<section>
-						<h5>
-							Visitor
-						</h5>
-						<p class="definition">
-							Represent an operation to be performed on the elements of an object structure. 
-							Visitor lets you define a new operation without changing the classes of the elements on which it operates.
-
-						</p>
-						<div class="data-container">
-							<p class="description">Frequency of use (in JavaScript):</p>
-							<img src="src/img/use_low.png" style="margin-left: 2vw;" alt="">
-						</div>
-						<img src="src/img/visitor.jpg" alt="">
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							class Monkey {
-								shout() {
-									console.log('Ooh oo aa aa!')
-								}
-							
-								accept(operation) {
-									operation.visitMonkey(this)
-								}
-							}
-							
-							class Lion {
-								roar() {
-									console.log('Roaaar!')
-								}
-								
-								accept(operation) {
-									operation.visitLion(this)
-								}
-							}
-							
-							class Dolphin {
-								speak() {
-									console.log('Tuut tuttu tuutt!')
-								}
-								
-								accept(operation) {
-									operation.visitDolphin(this)
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const speak = {
-								visitMonkey(monkey){
-									monkey.shout()
-								},
-								visitLion(lion){
-									lion.roar()
-								},
-								visitDolphin(dolphin){
-									dolphin.speak()
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const monkey = new Monkey()
-							const lion = new Lion()
-							const dolphin = new Dolphin()
-							
-							monkey.accept(speak)    // Ooh oo aa aa!    
-							lion.accept(speak)      // Roaaar!
-							dolphin.accept(speak)   // Tuut tutt tuutt!
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							const jump = {
-								visitMonkey(monkey) {
-									console.log('Jumped 20 feet high! on to the tree!')
-								},
-								visitLion(lion) {
-									console.log('Jumped 7 feet! Back on the ground!')
-								},
-								visitDolphin(dolphin) {
-									console.log('Walked on water a little and disappeared')
-								}
-							}
-						</code></pre>
-					</section>
-					<section>
-						<pre><code data-trim data-noescape>
-							monkey.accept(speak)   // Ooh oo aa aa!
-							monkey.accept(jump)    // Jumped 20 feet high! on to the tree!
-							
-							lion.accept(speak)     // Roaaar!
-							lion.accept(jump)      // Jumped 7 feet! Back on the ground! 
-							
-							dolphin.accept(speak)  // Tuut tutt tuutt! 
-							dolphin.accept(jump)   // Walked on water a little and disappeared
-						</code></pre>
-					</section>
 				</section>
 				<section data-background-image="src/img/background.jpg">
 					<div class="data-container">
